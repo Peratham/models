@@ -15,8 +15,8 @@ limitations under the License.
 
 // Parser state for the transition-based dependency parser.
 
-#ifndef $TARGETDIR_PARSER_STATE_H_
-#define $TARGETDIR_PARSER_STATE_H_
+#ifndef SYNTAXNET_PARSER_STATE_H_
+#define SYNTAXNET_PARSER_STATE_H_
 
 #include <string>
 #include <vector>
@@ -210,14 +210,14 @@ class ParserState {
   int next_;
 
   // Parse stack of partially processed tokens.
-  vector<int> stack_;
+  std::vector<int> stack_;
 
   // List of head positions for the (partial) dependency tree.
-  vector<int> head_;
+  std::vector<int> head_;
 
   // List of dependency relation labels describing the (partial) dependency
   // tree.
-  vector<int> label_;
+  std::vector<int> label_;
 
   // Score of the parser state.
   double score_ = 0.0;
@@ -230,4 +230,4 @@ class ParserState {
 
 }  // namespace syntaxnet
 
-#endif  // $TARGETDIR_PARSER_STATE_H_
+#endif  // SYNTAXNET_PARSER_STATE_H_

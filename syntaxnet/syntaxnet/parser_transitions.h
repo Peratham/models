@@ -15,8 +15,8 @@ limitations under the License.
 
 // Transition system for the transition-based dependency parser.
 
-#ifndef $TARGETDIR_PARSER_TRANSITIONS_H_
-#define $TARGETDIR_PARSER_TRANSITIONS_H_
+#ifndef SYNTAXNET_PARSER_TRANSITIONS_H_
+#define SYNTAXNET_PARSER_TRANSITIONS_H_
 
 #include <string>
 #include <vector>
@@ -118,7 +118,7 @@ class ParserTransitionSystem
   // Returns all next gold actions for the parser during training using the
   // dependency relations found in the underlying annotated sentence.
   virtual void GetAllNextGoldActions(const ParserState &state,
-                                     vector<ParserAction> *actions) const {
+                                     std::vector<ParserAction> *actions) const {
     ParserAction action = GetNextGoldAction(state);
     *actions = {action};
   }
@@ -201,8 +201,8 @@ class ParserTransitionSystem
 };
 
 #define REGISTER_TRANSITION_SYSTEM(type, component) \
-  REGISTER_CLASS_COMPONENT(ParserTransitionSystem, type, component)
+  REGISTER_SYNTAXNET_CLASS_COMPONENT(ParserTransitionSystem, type, component)
 
 }  // namespace syntaxnet
 
-#endif  // $TARGETDIR_PARSER_TRANSITIONS_H_
+#endif  // SYNTAXNET_PARSER_TRANSITIONS_H_

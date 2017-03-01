@@ -30,9 +30,9 @@ limitations under the License.
 
 #include <string>
 
-#include "syntaxnet/utils.h"
 #include "syntaxnet/parser_state.h"
 #include "syntaxnet/parser_transitions.h"
+#include "syntaxnet/utils.h"
 #include "tensorflow/core/lib/strings/strcat.h"
 
 namespace syntaxnet {
@@ -297,6 +297,40 @@ class ArcStandardTransitionSystem : public ParserTransitionSystem {
   // Returns a new transition state to be used to enhance the parser state.
   ParserTransitionState *NewTransitionState(bool training_mode) const override {
     return new ArcStandardTransitionState();
+  }
+
+  // Meta information API. Returns token indices to link parser actions back
+  // to positions in the input sentence.
+  bool SupportsActionMetaData() const override { return true; }
+
+  // Returns the child of a new arc for reduce actions.
+  int ChildIndex(const ParserState &state,
+                 const ParserAction &action) const override {
+    switch (ActionType(action)) {
+      case SHIFT:
+        return -1;
+      case LEFT_ARC:  // left arc pops stack(1)
+        return state.Stack(1);
+      case RIGHT_ARC:
+        return state.Stack(0);
+      default:
+        LOG(FATAL) << "Invalid parser action: " << action;
+    }
+  }
+
+  // Returns the parent of a new arc for reduce actions.
+  int ParentIndex(const ParserState &state,
+                  const ParserAction &action) const override {
+    switch (ActionType(action)) {
+      case SHIFT:
+        return -1;
+      case LEFT_ARC:  // left arc pops stack(1)
+        return state.Stack(0);
+      case RIGHT_ARC:
+        return state.Stack(1);
+      default:
+        LOG(FATAL) << "Invalid parser action: " << action;
+    }
   }
 };
 
